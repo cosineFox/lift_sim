@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lift Simulation</title>
+    <style>
+    body {
+      font-family: sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    #elevator-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 350px;
+      height: 600px;
+      margin: 50px auto;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    #elevator {
+      width: 200px;
+      height: 100px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      line-height: 100px;
+      border-radius: 10px;
+      background-image: url('elevator-door.png');
+      background-size: cover;
+      margin: 20px auto;
+    }
+
+    #floor-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .floor-button {
+      width: 50px;
+      height: 50px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      text-align: center;
+      line-height: 50px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 5px;
+    }
+
+    .floor-button:hover {
+      background-color: #eee;
+    }
+
+    .floor-button.active {
+      background-color: #4285f4 !important;
+      color: white;
+    }
+
+    #up-button, #down-button {
+      width: 70px;
+      height: 50px;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 24px;
+      border-radius: 5px;
+      margin: 20px auto;
+    }
+
+    #up-button:hover, #down-button:hover {
+      background-color: #367db7;
+    }
+
+    #elevator p {
+      color: #4285f4;
+    }
+    </style>
+</head>
+<body>
+    <div id="elevator-container">
+        <header>
+            <h1>Lift Simulator</h1>
+        </header>
+        <div id="elevator">Elevator</div>
+        <div id="floor-buttons">
+            <div class="floor-button" data-floor="1">1</div>
+            <div class="floor-button" data-floor="2">2</div>
+            <div class="floor-button" data-floor="3">3</div>
+            <div class="floor-button" data-floor="4">4</div>
+            <div class="floor-button" data-floor="5">5</div>
+            <div class="floor-button" data-floor="6">6</div>
+            <div class="floor-button" data-floor="7">7</div>
+            <div class="floor-button" data-floor="8">8</div>
+            <div class="floor-button" data-floor="9">9</div>
+            <div class="floor-button" data-floor="10">10</div>
+        </div>
+        <button id="up-button">▲</button>
+        <button id="down-button">▼</button>
+    </div>
+
+    <script>
+        const elevator = document.getElementById('elevator');
+        const floorButtons = document.querySelectorAll('.floor-button');
+        const upButton = document.getElementById('up-button');
+        const downButton = document.getElementById('down-button');
+
+        let currentFloor = 1;
+
+        elevator.textContent = `Current Floor: ${currentFloor}`;
+
+        floorButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetFloor = parseInt(button.dataset.floor);
+
+                if (targetFloor > currentFloor) {
+                    moveElevatorUp(targetFloor);
+                } else if (targetFloor < currentFloor) {
+                    moveElevatorDown(targetFloor);
+                }
+            });
+        });
+
+        upButton.addEventListener('click', () => {
+            const targetFloor = Math.min(currentFloor + 1, 10);
+            moveElevatorUp(targetFloor);
+        });
+
+        downButton.addEventListener('click', () => {
+            const targetFloor = Math.max(currentFloor - 1, 1);
+            moveElevatorDown(targetFloor);
+        });
+
+        function moveElevatorUp(targetFloor) {
+            let animationInterval = setInterval(() => {
+                if (currentFloor < targetFloor) {
+                    currentFloor++;
+                    elevator.textContent = `Current Floor: ${currentFloor}`;
+                } else {
+                    clearInterval(animationInterval);
+                }
+            }, 500);
+        }
+
+        function moveElevatorDown(targetFloor) {
+    let animationInterval = setInterval(() => {
+        if (currentFloor > targetFloor) {
+            currentFloor--;
+            elevator.textContent = `Current Floor: ${currentFloor}`;
+        } else {
+            clearInterval(animationInterval);
+        }
+    }, 500);
+}
+</script>
+</body>
+</html>
